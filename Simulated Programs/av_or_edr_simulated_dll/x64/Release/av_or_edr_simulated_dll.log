@@ -1,0 +1,7 @@
+﻿  pch.cpp
+  dllmain.cpp
+  Generating code
+  Previous IPDB not found, fall back to full compilation.
+  All 12 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+  av_or_edr_simulated_dll.vcxproj -> C:\Users\gnp\source\repos\av_or_edr_simulated_dll\x64\Release\av_or_edr_simulated_dll.dll
