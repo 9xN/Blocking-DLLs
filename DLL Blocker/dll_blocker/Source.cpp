@@ -9,21 +9,23 @@ int main(int argc, char* argv[])
         return 1;
     }
 
-    // Convert the target program path to a wide-character string
     const char* targetPath = argv[1];
+
+    // Convert the target program path to a wide-character string
     int wideCharLen = MultiByteToWideChar(CP_UTF8, 0, targetPath, -1, NULL, 0);
     wchar_t* wideCharBuffer = new wchar_t[wideCharLen];
     MultiByteToWideChar(CP_UTF8, 0, targetPath, -1, wideCharBuffer, wideCharLen);
 
     STARTUPINFOEXA si = {};
     PROCESS_INFORMATION pi = {};
-    SIZE_T size = 0;
 
     // Initialize the STARTUPINFOEXA structure
     si.StartupInfo.cb = sizeof(STARTUPINFOEXA);
     si.StartupInfo.dwFlags = EXTENDED_STARTUPINFO_PRESENT;
 
-    // Get the size of the PROC_THREAD_ATTRIBUTE_LIST to be allocated
+    SIZE_T size = 0;
+
+    // Determine the required size of the PROC_THREAD_ATTRIBUTE_LIST
     InitializeProcThreadAttributeList(NULL, 1, 0, &size);
 
     // Allocate memory for the PROC_THREAD_ATTRIBUTE_LIST
@@ -58,7 +60,7 @@ int main(int argc, char* argv[])
         fprintf(stderr, "Failed to create the target process.\n");
 
         // Clean up allocated resources
-        free(wideCharBuffer);
+        delete[] wideCharBuffer;
         HeapFree(GetProcessHeap(), 0, si.lpAttributeList);
 
         return 1;
@@ -69,7 +71,7 @@ int main(int argc, char* argv[])
     CloseHandle(pi.hProcess);
 
     // Clean up allocated resources
-    free(wideCharBuffer);
+    delete[] wideCharBuffer;
     HeapFree(GetProcessHeap(), 0, si.lpAttributeList);
 
     return 0;
